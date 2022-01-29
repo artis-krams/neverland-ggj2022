@@ -32,10 +32,6 @@ public class GameLogic : Node
 
 	private Button previousBlockTarget2;
 
-	private AnimatedSprite animation1;
-
-	private AnimatedSprite animation2;
-
 	private Player Player1;
 
 	private Player Player2;
@@ -44,16 +40,36 @@ public class GameLogic : Node
 	{
 		Player1 = GetParent().GetNode("Player1") as Player;
 		Player2 = GetParent().GetNode("Player2") as Player;
-		animation1 = Player1.GetNode("AnimatedSprite") as AnimatedSprite;
-		animation2 = Player2.GetNode("AnimatedSprite") as AnimatedSprite;
-		animation1
-			.Connect("animation_finished",
-			this,
-			"_on_AnimatedSprite_animation_finished");
-		animation2
-			.Connect("animation_finished",
-			this,
-			"_on_AnimatedSprite_animation_finished2");
+	}
+
+	public void _on_SubmitAttackAction_clicked(Button instance)
+	{
+		string attackTypeAnimName = String.Empty;
+
+		switch (CurrentAttackType)
+		{
+			case (AttackType.Slash):
+				attackTypeAnimName = "slash";
+				break;
+			case (AttackType.Stab):
+				attackTypeAnimName = "stab";
+				break;
+			default:
+				break;
+		}
+
+		string attackTargetAnimName =
+			GetAttackTargetAnimName(CurrentAttackTarget);
+
+		Player1.Play($"{attackTargetAnimName} {attackTypeAnimName}");
+
+		string blockTargetAnimName =
+			GetAttackTargetAnimName(CurrentBlockTarget);
+
+		Player2.Play($"{blockTargetAnimName} block");
+
+		Player1.RecieveDamage(23);
+		Player2.RecieveDamage(27);
 	}
 
 	private void SetAttackTarget(Button instance, AttackTarget target)
@@ -109,56 +125,19 @@ public class GameLogic : Node
 		}
 	}
 
-	public void _on_SubmitAttackAction_clicked(Button instance)
+	private string GetAttackTargetAnimName(AttackTarget target)
 	{
-		string attackTypeAnimName = String.Empty;
-
-		switch (CurrentAttackType)
-		{
-			case (AttackType.Slash):
-				attackTypeAnimName = "slash";
-				break;
-			case (AttackType.Stab):
-				attackTypeAnimName = "stab";
-				break;
-			default:
-				break;
-		}
-
-		string attackTargetAnimName = GetAttackTargetAnimName(CurrentAttackTarget);
-
-		animation1.Play($"{attackTargetAnimName} {attackTypeAnimName}");
-
-		string blockTargetAnimName = GetAttackTargetAnimName(CurrentBlockTarget);
-
-		animation2.Play($"{blockTargetAnimName} block");
-
-		Player1.RecieveDamage(23);
-		Player2.RecieveDamage(27);
-	}
-
-	private string GetAttackTargetAnimName(AttackTarget target){
-
 		switch (target)
 		{
 			case (AttackTarget.Head):
 				return "up";
 			case (AttackTarget.Torso):
-				return "middle";
+				return "mid";
 			case (AttackTarget.Legs):
 				return "down";
 			default:
 				return String.Empty;
 		}
-	}
-
-	public void _on_AnimatedSprite_animation_finished()
-	{
-		animation1.Play("idle");
-	}
-	public void _on_AnimatedSprite_animation_finished2()
-	{
-		animation2.Play("idle");
 	}
 
 	public void _on_AttackHeadAction_clicked(Button instance)

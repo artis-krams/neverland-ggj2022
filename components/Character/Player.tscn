@@ -1,0 +1,181 @@
+[gd_scene load_steps=108 format=2]
+
+[ext_resource path="res://resources/character/Up Block/4.png" type="Texture" id=1]
+[ext_resource path="res://resources/character/down block/1.png" type="Texture" id=2]
+[ext_resource path="res://resources/character/down block/9.png" type="Texture" id=3]
+[ext_resource path="res://resources/character/down block/2.png" type="Texture" id=4]
+[ext_resource path="res://resources/character/Up stab/10.png" type="Texture" id=5]
+[ext_resource path="res://resources/character/down block/7.png" type="Texture" id=6]
+[ext_resource path="res://resources/character/down block/6.png" type="Texture" id=7]
+[ext_resource path="res://resources/character/down block/3.png" type="Texture" id=8]
+[ext_resource path="res://resources/character/down block/4.png" type="Texture" id=9]
+[ext_resource path="res://resources/character/Up Block/1.png" type="Texture" id=10]
+[ext_resource path="res://resources/character/Up stab/9.png" type="Texture" id=11]
+[ext_resource path="res://resources/character/down block/8.png" type="Texture" id=12]
+[ext_resource path="res://resources/character/Up stab/8.png" type="Texture" id=13]
+[ext_resource path="res://resources/character/down block/5.png" type="Texture" id=14]
+[ext_resource path="res://resources/character/Up Block/5.png" type="Texture" id=15]
+[ext_resource path="res://resources/character/Up Block/6.png" type="Texture" id=16]
+[ext_resource path="res://components/Character/Player.cs" type="Script" id=17]
+[ext_resource path="res://resources/character/Up Block/9.png" type="Texture" id=18]
+[ext_resource path="res://components/Game/color_theme.tres" type="Theme" id=19]
+[ext_resource path="res://resources/character/Up slash/18.png" type="Texture" id=20]
+[ext_resource path="res://resources/character/Up stab/5.png" type="Texture" id=21]
+[ext_resource path="res://resources/character/Up stab/6.png" type="Texture" id=22]
+[ext_resource path="res://resources/character/Up slash/8.png" type="Texture" id=23]
+[ext_resource path="res://resources/character/Up slash/16.png" type="Texture" id=24]
+[ext_resource path="res://resources/character/Up slash/17.png" type="Texture" id=25]
+[ext_resource path="res://resources/character/Up slash/13.png" type="Texture" id=26]
+[ext_resource path="res://resources/character/Up slash/11.png" type="Texture" id=27]
+[ext_resource path="res://resources/character/Up stab/3.png" type="Texture" id=28]
+[ext_resource path="res://resources/character/idel/2.png" type="Texture" id=29]
+[ext_resource path="res://resources/character/Up Block/7.png" type="Texture" id=30]
+[ext_resource path="res://resources/character/Up slash/10.png" type="Texture" id=31]
+[ext_resource path="res://resources/character/Up slash/12.png" type="Texture" id=32]
+[ext_resource path="res://resources/character/idel/3.png" type="Texture" id=33]
+[ext_resource path="res://resources/character/Up slash/15.png" type="Texture" id=34]
+[ext_resource path="res://resources/character/idel/5.png" type="Texture" id=35]
+[ext_resource path="res://resources/character/Up stab/4.png" type="Texture" id=36]
+[ext_resource path="res://resources/character/Up Block/2.png" type="Texture" id=37]
+[ext_resource path="res://resources/character/Up Block/8.png" type="Texture" id=38]
+[ext_resource path="res://resources/character/Up slash/9.png" type="Texture" id=39]
+[ext_resource path="res://resources/character/idel/1.png" type="Texture" id=40]
+[ext_resource path="res://resources/character/Up slash/6.png" type="Texture" id=41]
+[ext_resource path="res://resources/character/idel/4.png" type="Texture" id=42]
+[ext_resource path="res://resources/character/idel/6.png" type="Texture" id=43]
+[ext_resource path="res://resources/character/Up slash/14.png" type="Texture" id=44]
+[ext_resource path="res://resources/character/Up slash/5.png" type="Texture" id=45]
+[ext_resource path="res://resources/character/down slash/1.png" type="Texture" id=46]
+[ext_resource path="res://resources/character/Up slash/1.png" type="Texture" id=47]
+[ext_resource path="res://resources/character/Up stab/7.png" type="Texture" id=48]
+[ext_resource path="res://resources/character/Up stab/2.png" type="Texture" id=49]
+[ext_resource path="res://resources/character/Up slash/4.png" type="Texture" id=50]
+[ext_resource path="res://resources/character/Up stab/1.png" type="Texture" id=51]
+[ext_resource path="res://resources/character/Up slash/7.png" type="Texture" id=52]
+[ext_resource path="res://resources/character/Up slash/2.png" type="Texture" id=53]
+[ext_resource path="res://resources/character/Up slash/3.png" type="Texture" id=54]
+[ext_resource path="res://resources/character/Up Block/3.png" type="Texture" id=55]
+[ext_resource path="res://resources/character/Up stab/11.png" type="Texture" id=56]
+[ext_resource path="res://resources/character/down slash/2.png" type="Texture" id=57]
+[ext_resource path="res://resources/character/down slash/4.png" type="Texture" id=58]
+[ext_resource path="res://resources/character/down slash/9.png" type="Texture" id=59]
+[ext_resource path="res://resources/character/down slash/12.png" type="Texture" id=60]
+[ext_resource path="res://resources/character/down slash/5.png" type="Texture" id=61]
+[ext_resource path="res://resources/character/down slash/8.png" type="Texture" id=62]
+[ext_resource path="res://resources/character/down slash/7.png" type="Texture" id=63]
+[ext_resource path="res://resources/character/down slash/10.png" type="Texture" id=64]
+[ext_resource path="res://resources/character/down slash/6.png" type="Texture" id=65]
+[ext_resource path="res://resources/character/down slash/11.png" type="Texture" id=66]
+[ext_resource path="res://resources/character/down slash/3.png" type="Texture" id=67]
+[ext_resource path="res://resources/character/mid slash/4.png" type="Texture" id=68]
+[ext_resource path="res://resources/character/mid slash/5.png" type="Texture" id=69]
+[ext_resource path="res://resources/character/mid slash/3.png" type="Texture" id=70]
+[ext_resource path="res://resources/character/mid slash/2.png" type="Texture" id=71]
+[ext_resource path="res://resources/character/mid stab/4.png" type="Texture" id=72]
+[ext_resource path="res://resources/character/mid slash/11.png" type="Texture" id=73]
+[ext_resource path="res://resources/character/mid stab/5.png" type="Texture" id=74]
+[ext_resource path="res://resources/character/mid stab/8.png" type="Texture" id=75]
+[ext_resource path="res://resources/character/mid stab/9.png" type="Texture" id=76]
+[ext_resource path="res://resources/character/mid slash/10.png" type="Texture" id=77]
+[ext_resource path="res://resources/character/mid stab/7.png" type="Texture" id=78]
+[ext_resource path="res://resources/character/mid stab/6.png" type="Texture" id=79]
+[ext_resource path="res://resources/character/mid slash/13.png" type="Texture" id=80]
+[ext_resource path="res://resources/character/mid slash/8.png" type="Texture" id=81]
+[ext_resource path="res://resources/character/mid stab/1.png" type="Texture" id=82]
+[ext_resource path="res://resources/character/mid slash/7.png" type="Texture" id=83]
+[ext_resource path="res://resources/character/mid stab/2.png" type="Texture" id=84]
+[ext_resource path="res://resources/character/mid slash/6.png" type="Texture" id=85]
+[ext_resource path="res://resources/character/mid slash/9.png" type="Texture" id=86]
+[ext_resource path="res://resources/character/mid slash/12.png" type="Texture" id=87]
+[ext_resource path="res://resources/character/mid stab/3.png" type="Texture" id=88]
+[ext_resource path="res://resources/character/down stab/2.png" type="Texture" id=89]
+[ext_resource path="res://resources/character/down stab/3.png" type="Texture" id=90]
+[ext_resource path="res://resources/character/down stab/5.png" type="Texture" id=91]
+[ext_resource path="res://resources/character/down stab/6.png" type="Texture" id=92]
+[ext_resource path="res://resources/character/down stab/4.png" type="Texture" id=93]
+[ext_resource path="res://resources/character/down stab/7.png" type="Texture" id=94]
+[ext_resource path="res://resources/character/down stab/1.png" type="Texture" id=95]
+[ext_resource path="res://resources/character/down stab/11.png" type="Texture" id=96]
+[ext_resource path="res://resources/character/down stab/10.png" type="Texture" id=97]
+[ext_resource path="res://resources/character/down stab/8.png" type="Texture" id=98]
+[ext_resource path="res://resources/character/mid block/1.png" type="Texture" id=99]
+[ext_resource path="res://resources/character/down stab/9.png" type="Texture" id=100]
+[ext_resource path="res://resources/character/mid block/2.png" type="Texture" id=101]
+[ext_resource path="res://resources/character/mid block/3.png" type="Texture" id=102]
+[ext_resource path="res://resources/character/mid block/4.png" type="Texture" id=103]
+[ext_resource path="res://resources/character/mid block/6.png" type="Texture" id=104]
+[ext_resource path="res://resources/character/mid slash/1.png" type="Texture" id=105]
+[ext_resource path="res://resources/character/mid block/5.png" type="Texture" id=106]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 40 ), ExtResource( 29 ), ExtResource( 33 ), ExtResource( 42 ), ExtResource( 35 ), ExtResource( 43 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 95 ), ExtResource( 89 ), ExtResource( 90 ), ExtResource( 93 ), ExtResource( 91 ), ExtResource( 92 ), ExtResource( 94 ), ExtResource( 98 ), ExtResource( 100 ), ExtResource( 97 ), ExtResource( 96 ) ],
+"loop": true,
+"name": "down stab",
+"speed": 13.0
+}, {
+"frames": [ ExtResource( 82 ), ExtResource( 84 ), ExtResource( 88 ), ExtResource( 72 ), ExtResource( 74 ), ExtResource( 79 ), ExtResource( 78 ), ExtResource( 75 ), ExtResource( 76 ) ],
+"loop": true,
+"name": "mid stab",
+"speed": 15.0
+}, {
+"frames": [ ExtResource( 105 ), ExtResource( 71 ), ExtResource( 70 ), ExtResource( 68 ), ExtResource( 69 ), ExtResource( 85 ), ExtResource( 83 ), ExtResource( 81 ), ExtResource( 86 ), ExtResource( 77 ), ExtResource( 73 ), ExtResource( 87 ), ExtResource( 80 ) ],
+"loop": true,
+"name": "mid slash",
+"speed": 15.0
+}, {
+"frames": [ ExtResource( 99 ), ExtResource( 101 ), ExtResource( 102 ), ExtResource( 103 ), ExtResource( 106 ), ExtResource( 104 ) ],
+"loop": true,
+"name": "mid block",
+"speed": 15.0
+}, {
+"frames": [ ExtResource( 46 ), ExtResource( 57 ), ExtResource( 67 ), ExtResource( 58 ), ExtResource( 61 ), ExtResource( 65 ), ExtResource( 63 ), ExtResource( 62 ), ExtResource( 59 ), ExtResource( 64 ), ExtResource( 66 ), ExtResource( 60 ) ],
+"loop": true,
+"name": "down slash",
+"speed": 17.0
+}, {
+"frames": [ ExtResource( 51 ), ExtResource( 49 ), ExtResource( 28 ), ExtResource( 36 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 48 ), ExtResource( 13 ), ExtResource( 11 ), ExtResource( 5 ), ExtResource( 56 ) ],
+"loop": true,
+"name": "up stab",
+"speed": 20.0
+}, {
+"frames": [ ExtResource( 10 ), ExtResource( 37 ), ExtResource( 55 ), ExtResource( 1 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 30 ), ExtResource( 38 ), ExtResource( 18 ) ],
+"loop": true,
+"name": "up block",
+"speed": 17.0
+}, {
+"frames": [ ExtResource( 47 ), ExtResource( 53 ), ExtResource( 54 ), ExtResource( 50 ), ExtResource( 45 ), ExtResource( 41 ), ExtResource( 52 ), ExtResource( 23 ), ExtResource( 39 ), ExtResource( 31 ), ExtResource( 27 ), ExtResource( 32 ), ExtResource( 26 ), ExtResource( 44 ), ExtResource( 34 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 20 ) ],
+"loop": true,
+"name": "up slash",
+"speed": 30.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 14 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 12 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "down block",
+"speed": 9.0
+} ]
+
+[node name="AnimatedSprite" type="AnimatedSprite"]
+position = Vector2( 328, 445 )
+scale = Vector2( 0.495, 0.495 )
+frames = SubResource( 1 )
+animation = "mid stab"
+frame = 7
+playing = true
+script = ExtResource( 17 )
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+margin_left = -90.9091
+margin_top = -305.05
+margin_right = 62.0909
+margin_bottom = -253.05
+theme = ExtResource( 19 )
+value = 25.0
+__meta__ = {
+"_edit_use_anchors_": false
+}

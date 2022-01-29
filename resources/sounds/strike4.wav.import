@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/strike4.wav-4718448e06192111e5deef3cf0635e7a.sample"
+
+[deps]
+
+source_file="res://resources/sounds/strike4.wav"
+dest_files=[ "res://.import/strike4.wav-4718448e06192111e5deef3cf0635e7a.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

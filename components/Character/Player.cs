@@ -1,32 +1,33 @@
 using System;
 using Godot;
 
-public class Player : Node
+public class Player : AnimatedSprite
 {
-    public double MaxHealth = 100;
+	public double MaxHealth = 100;
 
-    public double Health = 100;
+	public double Health = 100;
 
-    private ProgressBar healthBar;
+	private ProgressBar healthBar;
 
-    public override void _Ready()
-    {
-        healthBar = GetNode<ProgressBar>("HealthBar");
+	public override void _Ready()
+	{
+		healthBar = GetNode<ProgressBar>("HealthBar");
 
-        // healthBar.MaxValue = MaxHealth;
-        healthBar.Value = MaxHealth;
-    }
+		healthBar.MaxValue = MaxHealth;
+		healthBar.Value = MaxHealth;
 
-    public void RecieveDamage(double ammount)
-    {
-        Health -= ammount;
-        GD.Print($"dmg{ammount}/{Health}");
-        healthBar.Value = Health;
-    }
+		base.Connect("animation_finished", this, "AnimationFinished");
+	}
 
-    //  // Called every frame. 'delta' is the elapsed time since the previous frame.
-    //  public override void _Process(float delta)
-    //  {
-    //
-    //  }
+	public void RecieveDamage(double ammount)
+	{
+		Health -= ammount;
+		GD.Print($"dmg{ammount}/{Health}");
+		healthBar.Value = Health;
+	}
+
+	public void AnimationFinished()
+	{
+		Play("idle");
+	}
 }
