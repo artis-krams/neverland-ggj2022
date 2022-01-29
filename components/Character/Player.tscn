@@ -1,4 +1,4 @@
-[gd_scene load_steps=109 format=2]
+[gd_scene load_steps=111 format=2]
 
 [ext_resource path="res://resources/character/Up Block/4.png" type="Texture" id=1]
 [ext_resource path="res://resources/character/down block/1.png" type="Texture" id=2]
@@ -107,6 +107,7 @@
 [ext_resource path="res://resources/character/mid slash/1.png" type="Texture" id=105]
 [ext_resource path="res://resources/character/mid block/5.png" type="Texture" id=106]
 [ext_resource path="res://resources/sounds/block1.wav" type="AudioStream" id=107]
+[ext_resource path="res://resources/fonts/RobotoLight.ttf" type="DynamicFontData" id=108]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -161,12 +162,18 @@ animations = [ {
 "speed": 9.0
 } ]
 
+[sub_resource type="DynamicFont" id=2]
+size = 80
+outline_size = 3
+outline_color = Color( 1, 0, 0, 1 )
+font_data = ExtResource( 108 )
+
 [node name="AnimatedSprite" type="AnimatedSprite"]
 position = Vector2( 328, 445 )
 scale = Vector2( 0.495, 0.495 )
 frames = SubResource( 1 )
 animation = "mid stab"
-frame = 7
+frame = 3
 playing = true
 script = ExtResource( 17 )
 
@@ -183,3 +190,16 @@ __meta__ = {
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 107 )
+
+[node name="DamageLabel" type="Label" parent="."]
+margin_left = -135.354
+margin_top = -464.646
+margin_right = 110.646
+margin_bottom = -322.646
+custom_fonts/font = SubResource( 2 )
+text = "-22"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

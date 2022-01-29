@@ -5,163 +5,198 @@ using Godot;
 [Tool]
 public class Player : AnimatedSprite
 {
-	public double MaxHealth = 100;
+    public double MaxHealth = 100;
 
-	public double Health = 100;
+    public double Health = 100;
 
-	public AttackTarget CurrentAttackTarget;
+    public AttackTarget CurrentAttackTarget;
 
-	public AttackTarget CurrentBlockTarget;
+    public AttackTarget CurrentBlockTarget;
 
-	public AttackTarget CurrentBlockTarget2;
+    public AttackTarget CurrentBlockTarget2;
 
-	public AttackType CurrentAttackType;
+    public AttackType CurrentAttackType;
 
-	private ProgressBar healthBar;
+    private ProgressBar healthBar;
 
-	private AudioStreamPlayer audio;
+    private AudioStreamPlayer audio;
 
-	private List<AudioStream> blockSounds;
+    private List<AudioStream> blockSounds;
 
-	private List<AudioStream> attackSounds;
+    private List<AudioStream> attackSounds;
 
-	private static Random random = new Random();
+    private static Random random = new Random();
 
-	private static string soundsFolder = "res://resources/sounds/";
+    private static string soundsFolder = "res://resources/sounds/";
 
-	public override void _Ready()
-	{
-		healthBar = GetNode<ProgressBar>("HealthBar");
-		audio = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
+    private Label damageLabel;
 
-		base.Connect("animation_finished", this, "AnimationFinished");
+    private Vector2 damageLabelBasePosition;
 
-		blockSounds = new List<AudioStream>();
-		blockSounds.Add(GD.Load<AudioStream>($"{soundsFolder}block1.wav"));
-		blockSounds.Add(GD.Load<AudioStream>($"{soundsFolder}block2.wav"));
-		blockSounds.Add(GD.Load<AudioStream>($"{soundsFolder}block3.wav"));
-		blockSounds.Add(GD.Load<AudioStream>($"{soundsFolder}clank.wav"));
+    private Vector2 damageLabelTargetPosition;
 
-		attackSounds = new List<AudioStream>();
-		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strike1.wav"));
-		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strike2.wav"));
-		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strike3.wav"));
-		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strike4.wav"));
-		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strike1.wav"));
-		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strikea.wav"));
-		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strikeb.wav"));
-		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strikec.wav"));
-	}
+    private float damageDisplayTime;
 
-	public void RecieveDamage(AttackTarget target, AttackType type)
-	{
-		audio.Stream = blockSounds[random.Next(blockSounds.Count)];
-		audio.VolumeDb = 0;
-		audio.Play();
+    public override void _Ready()
+    {
+        healthBar = GetNode<ProgressBar>("HealthBar");
+        audio = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
 
-		string blockTargetAnimName =
-			GetAttackTargetAnimName(CurrentBlockTarget);
+        base.Connect("animation_finished", this, "AnimationFinished");
 
-		Play($"{blockTargetAnimName} block");
+        blockSounds = new List<AudioStream>();
+        blockSounds.Add(GD.Load<AudioStream>($"{soundsFolder}block1.wav"));
+        blockSounds.Add(GD.Load<AudioStream>($"{soundsFolder}block2.wav"));
+        blockSounds.Add(GD.Load<AudioStream>($"{soundsFolder}block3.wav"));
+        blockSounds.Add(GD.Load<AudioStream>($"{soundsFolder}clank.wav"));
 
-		Health -= GetDamageAmmount(target, type);
-		healthBar.Value = Health;
+        attackSounds = new List<AudioStream>();
+        attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strike1.wav"));
+        attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strike2.wav"));
+        attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strike3.wav"));
+        attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strike4.wav"));
+        attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strike1.wav"));
+        attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strikea.wav"));
+        attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strikeb.wav"));
+        attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strikec.wav"));
 
-		GD.Print($"def {CurrentBlockTarget} {CurrentBlockTarget2}");
-		GD.Print($"dmg {GetDamageAmmount(target, type)}");
-	}
+        damageLabel = GetNode<Label>("DamageLabel");
+        damageLabelBasePosition = damageLabel.RectPosition;
+        damageLabelTargetPosition =
+            new Vector2(damageLabel.RectPosition.x,
+                damageLabel.RectPosition.y - 2);
+        damageDisplayTime = 0;
+    }
 
-	private double GetDamageAmmount(AttackTarget attackTarget, AttackType attackType)
-	{
-		double baseDamage = 10;
+    public override void _Process(float delta)
+    {
+        base._Process(delta);
+        damageDisplayTime += delta * 126f;
+        damageLabel.RectPosition =
+            damageLabelBasePosition
+                .LinearInterpolate(damageLabelTargetPosition, damageDisplayTime);
+    }
 
-		switch (attackTarget)
-		{
-			case (AttackTarget.Head):
-				baseDamage *= 1.5;
-				break;
-			case (AttackTarget.Torso):
-				baseDamage *= 1.1;
-				break;
-			case (AttackTarget.Legs):
-				baseDamage *= 0.9;
-				break;
-		}
+    public void RecieveDamage(AttackTarget target, AttackType type)
+    {
+        audio.Stream = blockSounds[random.Next(blockSounds.Count)];
+        audio.VolumeDb = 0;
+        audio.Play();
 
-		if (CurrentBlockTarget == attackTarget || CurrentBlockTarget2 == attackTarget)
-		{
-			if (attackType == AttackType.Slash) baseDamage *= 0.5;
+        string blockTargetAnimName =
+            GetAttackTargetAnimName(CurrentBlockTarget);
 
-			if (attackType == AttackType.Stab) baseDamage *= 0.7;
-		}
-		else
-		{
-			if (attackType == AttackType.Slash) baseDamage *= 1.5;
+        Play($"{blockTargetAnimName} block");
 
-			if (attackType == AttackType.Stab) baseDamage *= 1.2;
-		}
+        var damage = GetDamageAmmount(target, type);
+        Health -= damage;
+        healthBar.Value = Health;
+        DisplayDamage (damage);
+        GD.Print($"def {CurrentBlockTarget} {CurrentBlockTarget2}");
+        GD.Print($"dmg {GetDamageAmmount(target, type)}");
+    }
 
-		return baseDamage;
-	}
+    private void DisplayDamage(double damage)
+    {
+        damageLabel.Text = $"-{damage}";
+        damageDisplayTime = 0;
+    }
 
-	public void AttackSequence()
-	{
-		audio.Stream = attackSounds[random.Next(attackSounds.Count)];
-		audio.VolumeDb = -14;
-		audio.Play();
+    private double
+    GetDamageAmmount(AttackTarget attackTarget, AttackType attackType)
+    {
+        double baseDamage = 10;
 
-		string attackTypeAnimName = GetAttackTypeAnimName(CurrentAttackType);
+        switch (attackTarget)
+        {
+            case (AttackTarget.Head):
+                baseDamage *= 1.5;
+                break;
+            case (AttackTarget.Torso):
+                baseDamage *= 1.1;
+                break;
+            case (AttackTarget.Legs):
+                baseDamage *= 0.9;
+                break;
+        }
 
-		string attackTargetAnimName =
-			GetAttackTargetAnimName(CurrentAttackTarget);
+        if (
+            CurrentBlockTarget == attackTarget ||
+            CurrentBlockTarget2 == attackTarget
+        )
+        {
+            if (attackType == AttackType.Slash) baseDamage *= 0.5;
 
-		Play($"{attackTargetAnimName} {attackTypeAnimName}");
-	}
+            if (attackType == AttackType.Stab) baseDamage *= 0.7;
+        }
+        else
+        {
+            if (attackType == AttackType.Slash) baseDamage *= 1.5;
 
-	public void AnimationFinished()
-	{
-		Play("idle");
-	}
+            if (attackType == AttackType.Stab) baseDamage *= 1.2;
+        }
 
-	private string GetAttackTypeAnimName(AttackType target)
-	{
-		switch (target)
-		{
-			case (AttackType.Slash):
-				return "slash";
-			case (AttackType.Stab):
-				return "stab";
-		}
+        return baseDamage;
+    }
 
-		return String.Empty;
-	}
+    public void AttackSequence()
+    {
+        audio.Stream = attackSounds[random.Next(attackSounds.Count)];
+        audio.VolumeDb = -14;
+        audio.Play();
 
-	private string GetAttackTargetAnimName(AttackTarget target)
-	{
-		switch (target)
-		{
-			case (AttackTarget.Head):
-				return "up";
-			case (AttackTarget.Torso):
-				return "mid";
-			case (AttackTarget.Legs):
-				return "down";
-			default:
-				return String.Empty;
-		}
-	}
+        string attackTypeAnimName = GetAttackTypeAnimName(CurrentAttackType);
 
-	public enum AttackType
-	{
-		Slash = 0,
-		Stab = 1
-	}
+        string attackTargetAnimName =
+            GetAttackTargetAnimName(CurrentAttackTarget);
 
-	public enum AttackTarget
-	{
-		None = -1,
-		Head = 0,
-		Torso = 1,
-		Legs = 2
-	}
+        Play($"{attackTargetAnimName} {attackTypeAnimName}");
+    }
+
+    public void AnimationFinished()
+    {
+        Play("idle");
+    }
+
+    private string GetAttackTypeAnimName(AttackType target)
+    {
+        switch (target)
+        {
+            case (AttackType.Slash):
+                return "slash";
+            case (AttackType.Stab):
+                return "stab";
+        }
+
+        return String.Empty;
+    }
+
+    private string GetAttackTargetAnimName(AttackTarget target)
+    {
+        switch (target)
+        {
+            case (AttackTarget.Head):
+                return "up";
+            case (AttackTarget.Torso):
+                return "mid";
+            case (AttackTarget.Legs):
+                return "down";
+            default:
+                return String.Empty;
+        }
+    }
+
+    public enum AttackType
+    {
+        Slash = 0,
+        Stab = 1
+    }
+
+    public enum AttackTarget
+    {
+        None = -1,
+        Head = 0,
+        Torso = 1,
+        Legs = 2
+    }
 }
