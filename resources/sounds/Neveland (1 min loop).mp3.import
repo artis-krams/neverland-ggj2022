@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Neveland (1 min loop).mp3-085a7d16c24680455ac9abea95d6a366.mp3str"
+
+[deps]
+
+source_file="res://resources/sounds/Neveland (1 min loop).mp3"
+dest_files=[ "res://.import/Neveland (1 min loop).mp3-085a7d16c24680455ac9abea95d6a366.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

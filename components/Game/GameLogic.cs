@@ -12,25 +12,31 @@ public class GameLogic : Node
 
 	private Button previousBlockTarget2;
 
-	private Player Player1;
+	private Player LocalPlayer;
 
-	private Player Player2;
+	private Player EnemyPlayer;
 
 	public override void _Ready()
 	{
-		Player1 = GetParent().GetNode("Player1") as Player;
-		Player2 = GetParent().GetNode("Player2") as Player;
+		LocalPlayer = GetParent().GetNode("Player1") as Player;
+		EnemyPlayer = GetParent().GetNode("Player2") as Player;
 	}
 
 	public void _on_SubmitAttackAction_clicked(Button instance)
 	{
-		Player1.AttackSequence();
-		Player2.RecieveDamage(7);
+		EnemyPlayer.CurrentBlockTarget = LocalPlayer.CurrentBlockTarget;
+		EnemyPlayer.CurrentBlockTarget2 = LocalPlayer.CurrentBlockTarget2;
+		// todo wait for network player
+
+		LocalPlayer.AttackSequence();
+		EnemyPlayer
+			.RecieveDamage(LocalPlayer.CurrentAttackTarget,
+			LocalPlayer.CurrentAttackType);
 	}
 
 	private void SetAttackTarget(Button instance, AttackTarget target)
 	{
-		Player1.CurrentAttackTarget = target;
+		LocalPlayer.CurrentAttackTarget = target;
 		if (previousAttackTartget != null)
 			previousAttackTartget.Call("set_filled", false);
 		instance.Call("set_filled", true);
@@ -41,20 +47,21 @@ public class GameLogic : Node
 	{
 		if (previousAttackType == instance || previousAttackType == instance)
 			return;
-		Player1.CurrentAttackType = type;
+		LocalPlayer.CurrentAttackType = type;
 		if (previousAttackType != null)
 			previousAttackType.Call("set_filled", false);
 		instance.Call("set_filled", true);
 		previousAttackType = instance;
 	}
 
-	private void SetBlockTarget(Button instance, AttackTarget type)
+	private void SetBlockTarget(Button instance, AttackTarget target)
 	{
 		if (previousBlockTarget == null)
 		{
 			GD.Print("previousBlockTarget = instance");
 			instance.Call("set_filled", true);
 			previousBlockTarget = instance;
+			LocalPlayer.CurrentBlockTarget = target;
 		}
 		else if (previousBlockTarget2 == null && previousBlockTarget != instance
 		)
@@ -62,6 +69,7 @@ public class GameLogic : Node
 			GD.Print("previousBlockTarget2 = instance");
 			instance.Call("set_filled", true);
 			previousBlockTarget2 = instance;
+			LocalPlayer.CurrentBlockTarget2 = target;
 		}
 		else
 		{
@@ -70,6 +78,7 @@ public class GameLogic : Node
 				instance.Call("set_filled", false);
 				GD.Print("previousBlockTarget = null");
 				previousBlockTarget = null;
+				LocalPlayer.CurrentBlockTarget = AttackTarget.None;
 			}
 
 			if (instance == previousBlockTarget2)
@@ -77,6 +86,7 @@ public class GameLogic : Node
 				GD.Print("previousBlockTarget2 = null");
 				instance.Call("set_filled", false);
 				previousBlockTarget2 = null;
+				LocalPlayer.CurrentBlockTarget2 = AttackTarget.None;
 			}
 		}
 	}

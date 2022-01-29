@@ -166,7 +166,7 @@ position = Vector2( 328, 445 )
 scale = Vector2( 0.495, 0.495 )
 frames = SubResource( 1 )
 animation = "mid stab"
-frame = 5
+frame = 7
 playing = true
 script = ExtResource( 17 )
 

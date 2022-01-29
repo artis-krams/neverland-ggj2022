@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://components/Game/Game.gd" type="Script" id=1]
 [ext_resource path="res://components/Spinner/Spinner.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://components/Button/Button.tscn" type="PackedScene" id=5]
 [ext_resource path="res://components/Game/GameLogic.cs" type="Script" id=6]
 [ext_resource path="res://components/Character/Player.tscn" type="PackedScene" id=7]
+[ext_resource path="res://resources/sounds/Neveland (1 min loop).mp3" type="AudioStream" id=8]
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -182,13 +183,18 @@ text = "Legs"
 [node name="Player1" parent="." instance=ExtResource( 7 )]
 position = Vector2( 382, 423 )
 animation = "idle"
-frame = 1
+frame = 0
 
 [node name="Player2" parent="." instance=ExtResource( 7 )]
 position = Vector2( 611, 423 )
 animation = "idle"
-frame = 1
+frame = 0
 flip_h = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = -12.284
+autoplay = true
 
 [connection signal="clicked" from="Actions/SubmitAttackAction" to="Actions" method="_on_SubmitAttackAction_clicked"]
 [connection signal="clicked" from="Actions/AttackActions/AttackHeadAction" to="Actions" method="_on_AttackHeadAction_clicked"]
