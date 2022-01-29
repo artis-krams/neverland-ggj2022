@@ -3,7 +3,6 @@ extends Panel
 
 signal clicked(instance)
 
-export(String) var text = "Text" setget set_text
 export(bool) var filled = false setget set_filled
 export(Texture) var texture = null setget set_texture
 export(int, "32px", "64px") var size = 0 setget _set_size
@@ -40,29 +39,23 @@ func _set_size(new_size):
 	else:
 		font = preload("res://resources/fonts/RobotoLight-64px.tres")
 	
-	$Label.set("custom_fonts/font", font)
 	set_filled(filled)
 	call_deferred("_update_label_size")
 
 
 func _update_label_size():
-	$Label.rect_size = rect_size
-	$Label.rect_pivot_offset = rect_size / 2.0
+	print("dafq")
+	$Texture.rect_size = rect_size
+	$Texture.rect_pivot_offset = rect_size * 2.0
 
-
-func set_text(new_text):
-	text = new_text
-	$Label.text = text
 
 func set_texture(new_texture):
 	texture = new_texture
 	if texture:
 		$Texture.texture = texture
 		$Texture.show()
-		$Label.hide()
 	else:
 		$Texture.hide()
-		$Label.show()
 	
 
 func set_filled(new_filled):
@@ -70,12 +63,10 @@ func set_filled(new_filled):
 
 	
 	if filled:
-		$Label.modulate = Color.white
-		$Texture.modulate = Color.white
+		#$Texture.modulate = Color.white
 		set("custom_styles/panel", _filled_stylebox)
 	else:
-		$Label.modulate = Color.black
-		$Texture.modulate = Color.black
+		#$Texture.modulate = Color.black
 		set("custom_styles/panel", _unfilled_stylebox)
 		
 

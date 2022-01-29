@@ -121,19 +121,9 @@ animations = [ {
 "name": "down stab",
 "speed": 13.0
 }, {
-"frames": [ ExtResource( 82 ), ExtResource( 84 ), ExtResource( 88 ), ExtResource( 72 ), ExtResource( 74 ), ExtResource( 79 ), ExtResource( 78 ), ExtResource( 75 ), ExtResource( 76 ) ],
-"loop": true,
-"name": "mid stab",
-"speed": 15.0
-}, {
 "frames": [ ExtResource( 105 ), ExtResource( 71 ), ExtResource( 70 ), ExtResource( 68 ), ExtResource( 69 ), ExtResource( 85 ), ExtResource( 83 ), ExtResource( 81 ), ExtResource( 86 ), ExtResource( 77 ), ExtResource( 73 ), ExtResource( 87 ), ExtResource( 80 ) ],
 "loop": true,
 "name": "mid slash",
-"speed": 15.0
-}, {
-"frames": [ ExtResource( 99 ), ExtResource( 101 ), ExtResource( 102 ), ExtResource( 103 ), ExtResource( 106 ), ExtResource( 104 ) ],
-"loop": true,
-"name": "mid block",
 "speed": 15.0
 }, {
 "frames": [ ExtResource( 46 ), ExtResource( 57 ), ExtResource( 67 ), ExtResource( 58 ), ExtResource( 61 ), ExtResource( 65 ), ExtResource( 63 ), ExtResource( 62 ), ExtResource( 59 ), ExtResource( 64 ), ExtResource( 66 ), ExtResource( 60 ) ],
@@ -146,20 +136,30 @@ animations = [ {
 "name": "up stab",
 "speed": 20.0
 }, {
-"frames": [ ExtResource( 10 ), ExtResource( 37 ), ExtResource( 55 ), ExtResource( 1 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 30 ), ExtResource( 38 ), ExtResource( 18 ) ],
+"frames": [ ExtResource( 99 ), ExtResource( 101 ), ExtResource( 102 ), ExtResource( 103 ), ExtResource( 106 ), ExtResource( 104 ) ],
 "loop": true,
-"name": "up block",
-"speed": 17.0
+"name": "mid block",
+"speed": 15.0
+}, {
+"frames": [ ExtResource( 82 ), ExtResource( 84 ), ExtResource( 88 ), ExtResource( 72 ), ExtResource( 74 ), ExtResource( 79 ), ExtResource( 78 ), ExtResource( 75 ), ExtResource( 76 ) ],
+"loop": true,
+"name": "mid stab",
+"speed": 15.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 14 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 12 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "down block",
+"speed": 9.0
 }, {
 "frames": [ ExtResource( 47 ), ExtResource( 53 ), ExtResource( 54 ), ExtResource( 50 ), ExtResource( 45 ), ExtResource( 41 ), ExtResource( 52 ), ExtResource( 23 ), ExtResource( 39 ), ExtResource( 31 ), ExtResource( 27 ), ExtResource( 32 ), ExtResource( 26 ), ExtResource( 44 ), ExtResource( 34 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 20 ) ],
 "loop": true,
 "name": "up slash",
 "speed": 30.0
 }, {
-"frames": [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 14 ), ExtResource( 7 ), ExtResource( 6 ), ExtResource( 12 ), ExtResource( 3 ) ],
+"frames": [ ExtResource( 10 ), ExtResource( 37 ), ExtResource( 55 ), ExtResource( 1 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 30 ), ExtResource( 38 ), ExtResource( 18 ) ],
 "loop": true,
-"name": "down block",
-"speed": 9.0
+"name": "up block",
+"speed": 17.0
 } ]
 
 [sub_resource type="DynamicFont" id=2]
@@ -172,16 +172,17 @@ font_data = ExtResource( 108 )
 position = Vector2( 328, 445 )
 scale = Vector2( 0.495, 0.495 )
 frames = SubResource( 1 )
-animation = "mid stab"
-frame = 3
+animation = "idle"
 playing = true
 script = ExtResource( 17 )
 
 [node name="HealthBar" type="ProgressBar" parent="."]
-margin_left = -90.9091
-margin_top = -305.05
-margin_right = 62.0909
-margin_bottom = -253.05
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -659.596
+margin_top = -290.909
+margin_right = -346.596
+margin_bottom = -217.909
 theme = ExtResource( 19 )
 value = 25.0
 __meta__ = {
@@ -193,9 +194,9 @@ stream = ExtResource( 107 )
 
 [node name="DamageLabel" type="Label" parent="."]
 margin_left = -135.354
-margin_top = -464.646
+margin_top = -14213.0
 margin_right = 110.646
-margin_bottom = -322.646
+margin_bottom = -14071.0
 custom_fonts/font = SubResource( 2 )
 text = "-22"
 align = 1

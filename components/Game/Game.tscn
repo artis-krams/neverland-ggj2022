@@ -1,13 +1,20 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://components/Game/Game.gd" type="Script" id=1]
 [ext_resource path="res://components/Spinner/Spinner.tscn" type="PackedScene" id=2]
 [ext_resource path="res://components/Game/TileSet.tres" type="TileSet" id=3]
-[ext_resource path="res://resources/fonts/RobotoLight-32px.tres" type="DynamicFont" id=4]
+[ext_resource path="res://resources/screen UI/attack_right.png" type="Texture" id=4]
 [ext_resource path="res://components/Button/Button.tscn" type="PackedScene" id=5]
 [ext_resource path="res://components/Game/GameLogic.cs" type="Script" id=6]
 [ext_resource path="res://components/Character/Player.tscn" type="PackedScene" id=7]
 [ext_resource path="res://resources/sounds/Neveland (1 min loop).mp3" type="AudioStream" id=8]
+[ext_resource path="res://resources/screen UI/duel_reality_image2.png" type="Texture" id=9]
+[ext_resource path="res://resources/screen UI/attack_center.png" type="Texture" id=10]
+[ext_resource path="res://resources/screen UI/rred_guy_left.png" type="Texture" id=11]
+[ext_resource path="res://resources/screen UI/stab.png" type="Texture" id=12]
+[ext_resource path="res://resources/screen UI/blue guy_right.png" type="Texture" id=13]
+[ext_resource path="res://resources/screen UI/slash.png" type="Texture" id=14]
+[ext_resource path="res://resources/screen UI/Block_right.png" type="Texture" id=15]
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -17,13 +24,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Background" type="ColorRect" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0.662745, 0.631373, 0.631373, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="DuelRealityImage2" type="Sprite" parent="."]
+position = Vector2( 512, 300 )
+scale = Vector2( 0.291948, 0.291948 )
+texture = ExtResource( 9 )
 
 [node name="Spinner" parent="." instance=ExtResource( 2 )]
 visible = false
@@ -45,150 +49,138 @@ __meta__ = {
 }
 
 [node name="SubmitAttackAction" parent="Actions" instance=ExtResource( 5 )]
-anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = 350.0
-margin_top = 75.0
-margin_right = 601.0
-margin_bottom = 185.0
-text = "Attack"
-size = 1
+margin_left = 351.0
+margin_top = 471.0
+margin_right = 698.0
+margin_bottom = 530.0
+texture = ExtResource( 10 )
+size = 2
 
-[node name="AttackActions" type="Label" parent="Actions"]
-self_modulate = Color( 0, 0, 0, 1 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 59.0
-margin_top = 27.0
-margin_right = 192.0
-margin_bottom = 107.0
-custom_fonts/font = ExtResource( 4 )
-text = "Attack"
-align = 1
-valign = 1
+[node name="AttackControls" type="Control" parent="Actions"]
+margin_left = 684.0
+margin_top = 26.0
+margin_right = 983.0
+margin_bottom = 331.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AttackHeadAction" parent="Actions/AttackActions" groups=["AttackTarget"] instance=ExtResource( 5 )]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -108.5
-margin_top = 14.0
-margin_right = -16.5
-margin_bottom = 70.0
-text = "Head"
+[node name="BlueGuyRight" type="Sprite" parent="Actions/AttackControls"]
+position = Vector2( 162.25, 164.25 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 13 )
 
-[node name="AttackTorsoAction" parent="Actions/AttackActions" groups=["AttackTarget"] instance=ExtResource( 5 )]
+[node name="AttackHeadAction" parent="Actions/AttackControls" groups=["AttackTarget"] instance=ExtResource( 5 )]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -106.5
-margin_top = 83.0
-margin_right = -14.5
-margin_bottom = 139.0
-text = "Torso"
+margin_left = -36.5
+margin_top = -241.0
+margin_right = 65.5
+margin_bottom = -189.0
 
-[node name="AttackLegsAction" parent="Actions/AttackActions" groups=["AttackTarget"] instance=ExtResource( 5 )]
+[node name="AttackTorsoAction" parent="Actions/AttackControls" groups=["AttackTarget"] instance=ExtResource( 5 )]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -106.5
-margin_top = 157.0
-margin_right = -14.5
-margin_bottom = 213.0
-text = "Legs"
+margin_left = -35.5
+margin_top = -179.0
+margin_right = 66.5
+margin_bottom = -124.0
 
-[node name="AttackSlashAction" parent="Actions/AttackActions" instance=ExtResource( 5 )]
+[node name="AttackLegsAction" parent="Actions/AttackControls" groups=["AttackTarget"] instance=ExtResource( 5 )]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = 24.5
-margin_top = 45.0
-margin_right = 116.5
-margin_bottom = 101.0
-text = "Slash"
+margin_left = -37.5
+margin_top = -102.0
+margin_right = 66.5
+margin_bottom = -48.0
 
-[node name="AttackStabAction" parent="Actions/AttackActions" instance=ExtResource( 5 )]
+[node name="AttackSlashAction" parent="Actions/AttackControls" instance=ExtResource( 5 )]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
+margin_left = 27.5
+margin_top = -11.0
+margin_right = 119.5
+margin_bottom = 45.0
+
+[node name="Slash" type="Sprite" parent="Actions/AttackControls/AttackSlashAction"]
+position = Vector2( 45, 13 )
+texture = ExtResource( 14 )
+
+[node name="AttackStabAction" parent="Actions/AttackControls" instance=ExtResource( 5 )]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
 margin_left = 26.5
-margin_top = 114.0
+margin_top = 56.0
 margin_right = 118.5
-margin_bottom = 170.0
-text = "Stab"
+margin_bottom = 112.0
 
-[node name="BlockActions" type="Label" parent="Actions"]
-self_modulate = Color( 0, 0, 0, 1 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 787.0
-margin_top = 37.0
-margin_right = 920.0
-margin_bottom = 117.0
-custom_fonts/font = ExtResource( 4 )
-text = "Block"
-align = 1
-valign = 1
+[node name="Stab" type="Sprite" parent="Actions/AttackControls/AttackStabAction"]
+position = Vector2( 89, 27 )
+texture = ExtResource( 12 )
+
+[node name="BlockControls" type="Control" parent="Actions"]
+margin_left = -18.0
+margin_top = 8.0
+margin_right = 373.0
+margin_bottom = 406.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BlockHeadAction" parent="Actions/BlockActions" instance=ExtResource( 5 )]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -44.5
-margin_top = 17.0
-margin_right = 47.5
-margin_bottom = 73.0
-text = "Head"
+[node name="RredGuyLeft" type="Sprite" parent="Actions/BlockControls"]
+position = Vector2( 183, 197 )
+scale = Vector2( 0.514354, 0.514354 )
+texture = ExtResource( 11 )
 
-[node name="BlockTorsoAction" parent="Actions/BlockActions" instance=ExtResource( 5 )]
+[node name="BlockHeadAction" parent="Actions/BlockControls" instance=ExtResource( 5 )]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -42.5
-margin_top = 86.0
-margin_right = 49.5
-margin_bottom = 142.0
-text = "Torso"
+margin_left = -57.5
+margin_top = -303.0
+margin_right = 34.5
+margin_bottom = -247.0
 
-[node name="BlockLegsAction" parent="Actions/BlockActions" instance=ExtResource( 5 )]
+[node name="BlockTorsoAction" parent="Actions/BlockControls" instance=ExtResource( 5 )]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -42.5
-margin_top = 160.0
-margin_right = 49.5
-margin_bottom = 216.0
-text = "Legs"
+margin_left = -55.5
+margin_top = -239.0
+margin_right = 36.5
+margin_bottom = -183.0
+
+[node name="BlockLegsAction" parent="Actions/BlockControls" instance=ExtResource( 5 )]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+margin_left = -54.5
+margin_top = -174.0
+margin_right = 37.5
+margin_bottom = -118.0
+
+[node name="AttackRight" type="Sprite" parent="."]
+position = Vector2( 849, 41 )
+texture = ExtResource( 4 )
+
+[node name="BlockRight" type="Sprite" parent="."]
+position = Vector2( 170, 42 )
+texture = ExtResource( 15 )
 
 [node name="Player1" parent="." instance=ExtResource( 7 )]
-position = Vector2( 382, 423 )
-animation = "idle"
-frame = 0
+position = Vector2( 430, 307 )
+frame = 1
 
 [node name="Player2" parent="." instance=ExtResource( 7 )]
-position = Vector2( 611, 423 )
-animation = "idle"
-frame = 0
+position = Vector2( 610, 307 )
+frame = 1
 flip_h = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
@@ -197,11 +189,11 @@ volume_db = -12.284
 autoplay = true
 
 [connection signal="clicked" from="Actions/SubmitAttackAction" to="Actions" method="_on_SubmitAttackAction_clicked"]
-[connection signal="clicked" from="Actions/AttackActions/AttackHeadAction" to="Actions" method="_on_AttackHeadAction_clicked"]
-[connection signal="clicked" from="Actions/AttackActions/AttackTorsoAction" to="Actions" method="_on_AttackTorsoAction_clicked"]
-[connection signal="clicked" from="Actions/AttackActions/AttackLegsAction" to="Actions" method="_on_AttackLegsAction_clicked"]
-[connection signal="clicked" from="Actions/AttackActions/AttackSlashAction" to="Actions" method="_on_AttackSlashAction_clicked"]
-[connection signal="clicked" from="Actions/AttackActions/AttackStabAction" to="Actions" method="_on_AttackStabAction_clicked"]
-[connection signal="clicked" from="Actions/BlockActions/BlockHeadAction" to="Actions" method="_on_BlockHeadAction_clicked"]
-[connection signal="clicked" from="Actions/BlockActions/BlockTorsoAction" to="Actions" method="_on_BlockTorsoAction_clicked"]
-[connection signal="clicked" from="Actions/BlockActions/BlockLegsAction" to="Actions" method="_on_BlockLegsAction_clicked"]
+[connection signal="clicked" from="Actions/AttackControls/AttackHeadAction" to="Actions" method="_on_AttackHeadAction_clicked"]
+[connection signal="clicked" from="Actions/AttackControls/AttackTorsoAction" to="Actions" method="_on_AttackTorsoAction_clicked"]
+[connection signal="clicked" from="Actions/AttackControls/AttackLegsAction" to="Actions" method="_on_AttackLegsAction_clicked"]
+[connection signal="clicked" from="Actions/AttackControls/AttackSlashAction" to="Actions" method="_on_AttackSlashAction_clicked"]
+[connection signal="clicked" from="Actions/AttackControls/AttackStabAction" to="Actions" method="_on_AttackStabAction_clicked"]
+[connection signal="clicked" from="Actions/BlockControls/BlockHeadAction" to="Actions" method="_on_BlockHeadAction_clicked"]
+[connection signal="clicked" from="Actions/BlockControls/BlockTorsoAction" to="Actions" method="_on_BlockTorsoAction_clicked"]
+[connection signal="clicked" from="Actions/BlockControls/BlockLegsAction" to="Actions" method="_on_BlockLegsAction_clicked"]
