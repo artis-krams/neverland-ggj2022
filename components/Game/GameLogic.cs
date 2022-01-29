@@ -1,29 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Godot;
+
+using static Player;
 
 public class GameLogic : Node
 {
-	public enum AttackType
-	{
-		Slash = 0,
-		Stab = 1
-	}
-
-	public enum AttackTarget
-	{
-		Head = 0,
-		Torso = 1,
-		Legs = 2
-	}
-
-	public AttackTarget CurrentAttackTarget;
-
-	public AttackTarget CurrentBlockTarget;
-
-	public AttackType CurrentAttackType;
-
 	private Button previousAttackTartget;
 
 	private Button previousAttackType;
@@ -44,37 +24,13 @@ public class GameLogic : Node
 
 	public void _on_SubmitAttackAction_clicked(Button instance)
 	{
-		string attackTypeAnimName = String.Empty;
-
-		switch (CurrentAttackType)
-		{
-			case (AttackType.Slash):
-				attackTypeAnimName = "slash";
-				break;
-			case (AttackType.Stab):
-				attackTypeAnimName = "stab";
-				break;
-			default:
-				break;
-		}
-
-		string attackTargetAnimName =
-			GetAttackTargetAnimName(CurrentAttackTarget);
-
-		Player1.Play($"{attackTargetAnimName} {attackTypeAnimName}");
-
-		string blockTargetAnimName =
-			GetAttackTargetAnimName(CurrentBlockTarget);
-
-		Player2.Play($"{blockTargetAnimName} block");
-
-		Player1.RecieveDamage(23);
-		Player2.RecieveDamage(27);
+		Player1.AttackSequence();
+		Player2.RecieveDamage(7);
 	}
 
 	private void SetAttackTarget(Button instance, AttackTarget target)
 	{
-		CurrentAttackTarget = target;
+		Player1.CurrentAttackTarget = target;
 		if (previousAttackTartget != null)
 			previousAttackTartget.Call("set_filled", false);
 		instance.Call("set_filled", true);
@@ -85,7 +41,7 @@ public class GameLogic : Node
 	{
 		if (previousAttackType == instance || previousAttackType == instance)
 			return;
-		CurrentAttackType = type;
+		Player1.CurrentAttackType = type;
 		if (previousAttackType != null)
 			previousAttackType.Call("set_filled", false);
 		instance.Call("set_filled", true);
@@ -122,21 +78,6 @@ public class GameLogic : Node
 				instance.Call("set_filled", false);
 				previousBlockTarget2 = null;
 			}
-		}
-	}
-
-	private string GetAttackTargetAnimName(AttackTarget target)
-	{
-		switch (target)
-		{
-			case (AttackTarget.Head):
-				return "up";
-			case (AttackTarget.Torso):
-				return "mid";
-			case (AttackTarget.Legs):
-				return "down";
-			default:
-				return String.Empty;
 		}
 	}
 

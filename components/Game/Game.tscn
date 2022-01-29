@@ -181,11 +181,13 @@ text = "Legs"
 
 [node name="Player1" parent="." instance=ExtResource( 7 )]
 position = Vector2( 382, 423 )
-frame = 9
+animation = "idle"
+frame = 1
 
 [node name="Player2" parent="." instance=ExtResource( 7 )]
 position = Vector2( 611, 423 )
-frame = 9
+animation = "idle"
+frame = 1
 flip_h = true
 
 [connection signal="clicked" from="Actions/SubmitAttackAction" to="Actions" method="_on_SubmitAttackAction_clicked"]
