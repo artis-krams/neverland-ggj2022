@@ -174,11 +174,11 @@ texture = ExtResource( 15 )
 
 [node name="Player1" parent="." instance=ExtResource( 7 )]
 position = Vector2( 430, 307 )
-frame = 2
+frame = 5
 
 [node name="Player2" parent="." instance=ExtResource( 7 )]
 position = Vector2( 610, 307 )
-frame = 2
+frame = 5
 flip_h = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
@@ -187,6 +187,8 @@ volume_db = -12.284
 autoplay = true
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
 
 [connection signal="clicked" from="Actions/SubmitAttackAction" to="." method="_on_SubmitAttackAction_clicked"]
 [connection signal="clicked" from="Actions/AttackControls/AttackHeadAction" to="." method="_on_AttackHeadAction_clicked"]

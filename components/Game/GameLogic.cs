@@ -24,6 +24,8 @@ public class GameLogic : Control
 
 	private string currentGameId;
 
+	private static Random random = new Random();
+
 	private static string
 		rootUrl =
 			"https://neverland-ggj2022-default-rtdb.europe-west1.firebasedatabase.app/games/";
@@ -37,11 +39,15 @@ public class GameLogic : Control
 		requestNode.Connect("request_completed", this, "OnRequestCompleted");
 
 		headerz = new string[] { "Content-Type: application/json" };
+		botTimer = GetNode<Timer>("Timer");
+		botTimer.Connect("timeout", this, "BotAttack");
 	}
 
 	float ellapsedTime = 0;
 
 	private string[] headerz;
+
+	private Timer botTimer;
 
 	public override void _Process(float delta)
 	{
@@ -62,22 +68,22 @@ public class GameLogic : Control
 	)
 	{
 		var responseBody = Encoding.UTF8.GetString(body);
-		GD.Print(responseBody);
+		GD.Print (responseBody);
 	}
 
 	private void RefreshGameStatus()
 	{
-		requestNode
-			.Request($"{rootUrl}{currentGameId}.json",
-			headerz,
-			true,
-			HTTPClient.Method.Get);
+		// requestNode
+		// 	.Request($"{rootUrl}{currentGameId}.json",
+		// 	headerz,
+		// 	true,
+		// 	HTTPClient.Method.Get);
 	}
 
 	public void StartGame(string gameId)
 	{
 		currentGameId = gameId;
-		GD.Print($"starting game {gameId}");
+		//GD.Print($"starting game {gameId}");
 	}
 
 	public void _on_SubmitAttackAction_clicked(Button instance)
@@ -90,6 +96,45 @@ public class GameLogic : Control
 		EnemyPlayer
 			.RecieveDamage(LocalPlayer.CurrentAttackTarget,
 			LocalPlayer.CurrentAttackType);
+		botTimer.Start(1);
+	}
+
+	public void BotAttack()
+	{
+		if(EnemyPlayer.dieded)
+		return;
+		GD.Print("bot attack");
+
+		var targets = Enum.GetValues(typeof (AttackTarget));
+		AttackTarget randomTarget =
+			(AttackTarget) targets.GetValue(random.Next(targets.Length));
+
+		EnemyPlayer.CurrentAttackTarget = randomTarget;
+
+		randomTarget =
+			(AttackTarget) targets.GetValue(random.Next(targets.Length));
+		EnemyPlayer.CurrentBlockTarget = randomTarget;
+
+		randomTarget =
+			(AttackTarget) targets.GetValue(random.Next(targets.Length));
+		EnemyPlayer.CurrentBlockTarget2 = randomTarget;
+
+		randomTarget =
+			(AttackTarget) targets.GetValue(random.Next(targets.Length));
+
+		var types = Enum.GetValues(typeof (AttackType));
+		AttackType randomType =
+			(AttackType) types.GetValue(random.Next(types.Length));
+			EnemyPlayer.CurrentAttackType = randomType;
+
+		randomType =
+			(AttackType) types.GetValue(random.Next(types.Length));
+		LocalPlayer.RecieveDamage (randomTarget, randomType);
+
+		botTimer.Stop();
+
+		
+		EnemyPlayer.AttackSequence();
 	}
 
 	private void SetAttackTarget(Button instance, AttackTarget target)

@@ -37,11 +37,13 @@ public class Player : AnimatedSprite
 
 	private float damageDisplayTime;
 
+	public bool dieded = false;
+
 	public override void _Ready()
 	{
 		healthBar = GetNode<ProgressBar>("HealthBar");
 		audio = GetNode<AudioStreamPlayer>("AudioStreamPlayer");
-
+		healthBar.Value = 100;
 		base.Connect("animation_finished", this, "AnimationFinished");
 
 		blockSounds = new List<AudioStream>();
@@ -60,27 +62,42 @@ public class Player : AnimatedSprite
 		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strikeb.wav"));
 		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strikec.wav"));
 
-		damageLabel = GetNode<Label>("DamageLabel");
+		damageLabel = GetNode<Label>("Label");
 		damageLabelBasePosition = damageLabel.RectPosition;
 		damageLabelTargetPosition =
 			new Vector2(damageLabel.RectPosition.x,
 				damageLabel.RectPosition.y - 2);
 		damageDisplayTime = 0;
+		GD.Print("player init ok");
 	}
 
 	public override void _Process(float delta)
 	{
 		base._Process(delta);
+		if (dieded && Frame >= 4)
+		{
+			GD.Print("dieded _Process");
+
+			//Playing = false;
+			Stop();
+			Frame = 5;
+		}
+		
 		damageDisplayTime += delta * 126f;
 		damageLabel.RectPosition =
 			damageLabelBasePosition
-				.LinearInterpolate(damageLabelTargetPosition, damageDisplayTime);
+				.LinearInterpolate(damageLabelTargetPosition,
+				damageDisplayTime);
 	}
 
 	public void RecieveDamage(AttackTarget target, AttackType type)
 	{
+		if (dieded) return;
+
 		audio.Stream = blockSounds[random.Next(blockSounds.Count)];
 		audio.VolumeDb = 0;
+
+		// GD.Print("RecieveDamage Play");
 		audio.Play();
 
 		string blockTargetAnimName =
@@ -92,8 +109,15 @@ public class Player : AnimatedSprite
 		Health -= damage;
 		healthBar.Value = Health;
 		DisplayDamage (damage);
-		GD.Print($"def {CurrentBlockTarget} {CurrentBlockTarget2}");
-		GD.Print($"dmg {GetDamageAmmount(target, type)}");
+
+		// GD.Print($"def {CurrentBlockTarget} {CurrentBlockTarget2}");
+		// GD.Print($"dmg {GetDamageAmmount(target, type)}");
+		if (Health < 0)
+		{
+			dieded = true;
+			Play("death");
+			GD.Print("dieded RecieveDamage");
+		}
 	}
 
 	private void DisplayDamage(double damage)
@@ -105,7 +129,7 @@ public class Player : AnimatedSprite
 	private double
 	GetDamageAmmount(AttackTarget attackTarget, AttackType attackType)
 	{
-		double baseDamage = 10;
+		double baseDamage = 20;
 
 		switch (attackTarget)
 		{
@@ -141,8 +165,12 @@ public class Player : AnimatedSprite
 
 	public void AttackSequence()
 	{
+		if (dieded) return;
+
 		audio.Stream = attackSounds[random.Next(attackSounds.Count)];
 		audio.VolumeDb = -14;
+
+		// GD.Print("AttackSequence Play");
 		audio.Play();
 
 		string attackTypeAnimName = GetAttackTypeAnimName(CurrentAttackType);
@@ -155,7 +183,7 @@ public class Player : AnimatedSprite
 
 	public void AnimationFinished()
 	{
-		Play("idle");
+		if (!dieded) Play("idle");
 	}
 
 	private string GetAttackTypeAnimName(AttackType target)
@@ -182,7 +210,7 @@ public class Player : AnimatedSprite
 			case (AttackTarget.Legs):
 				return "down";
 			default:
-				return String.Empty;
+				return "up";
 		}
 	}
 
