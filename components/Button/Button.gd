@@ -44,7 +44,6 @@ func _set_size(new_size):
 
 
 func _update_label_size():
-	print("dafq")
 	$Texture.rect_size = rect_size
 	$Texture.rect_pivot_offset = rect_size * 2.0
 

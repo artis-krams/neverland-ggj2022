@@ -1,8 +1,12 @@
+using System;
+using System.IO;
+using System.Text;
 using Godot;
+using Newtonsoft.Json;
 
 using static Player;
 
-public class GameLogic : Node
+public class GameLogic : Control
 {
 	private Button previousAttackTartget;
 
@@ -16,18 +20,72 @@ public class GameLogic : Node
 
 	private Player EnemyPlayer;
 
+	private HTTPRequest requestNode;
+
+	private string currentGameId;
+
+	private static string
+		rootUrl =
+			"https://neverland-ggj2022-default-rtdb.europe-west1.firebasedatabase.app/games/";
+
 	public override void _Ready()
 	{
-		LocalPlayer = GetParent().GetNode("Player1") as Player;
-		EnemyPlayer = GetParent().GetNode("Player2") as Player;
+		LocalPlayer = GetNode("Player1") as Player;
+		EnemyPlayer = GetNode("Player2") as Player;
+
+		requestNode = GetNode<HTTPRequest>("HTTPRequest");
+		requestNode.Connect("request_completed", this, "OnRequestCompleted");
+
+		headerz = new string[] { "Content-Type: application/json" };
+	}
+
+	float ellapsedTime = 0;
+
+	private string[] headerz;
+
+	public override void _Process(float delta)
+	{
+		base._Process(delta);
+		ellapsedTime += delta;
+		if (ellapsedTime > 2)
+		{
+			ellapsedTime = 0;
+			RefreshGameStatus();
+		}
+	}
+
+	public void OnRequestCompleted(
+		int result,
+		int response_code,
+		string[] headers,
+		byte[] body
+	)
+	{
+		var responseBody = Encoding.UTF8.GetString(body);
+		GD.Print(responseBody);
+	}
+
+	private void RefreshGameStatus()
+	{
+		requestNode
+			.Request($"{rootUrl}{currentGameId}.json",
+			headerz,
+			true,
+			HTTPClient.Method.Get);
+	}
+
+	public void StartGame(string gameId)
+	{
+		currentGameId = gameId;
+		GD.Print($"starting game {gameId}");
 	}
 
 	public void _on_SubmitAttackAction_clicked(Button instance)
 	{
 		EnemyPlayer.CurrentBlockTarget = LocalPlayer.CurrentBlockTarget;
 		EnemyPlayer.CurrentBlockTarget2 = LocalPlayer.CurrentBlockTarget2;
-		// todo wait for network player
 
+		// todo wait for network player
 		LocalPlayer.AttackSequence();
 		EnemyPlayer
 			.RecieveDamage(LocalPlayer.CurrentAttackTarget,

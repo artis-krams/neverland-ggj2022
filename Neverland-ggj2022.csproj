@@ -3,4 +3,8 @@
     <TargetFramework>net472</TargetFramework>
     <RootNamespace>Neverlandggj2022</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="json.net" Version="1.0.33" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
 </Project>

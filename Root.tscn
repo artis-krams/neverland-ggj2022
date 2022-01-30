@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Root.gd" type="Script" id=1]
+[ext_resource path="res://Root.cs" type="Script" id=1]
 [ext_resource path="res://resources/screen UI/neverland_logo.png" type="Texture" id=2]
-[ext_resource path="res://components/Button/Button.tscn" type="PackedScene" id=3]
 [ext_resource path="res://resources/fonts/RobotoLight-24px.tres" type="DynamicFont" id=4]
 [ext_resource path="res://components/Game/Game.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/screen UI/Neverland_intro.png" type="Texture" id=6]
@@ -27,29 +26,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Host" parent="Menu" instance=ExtResource( 3 )]
-visible = false
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 38.0
-margin_top = 11.0
-margin_right = 269.0
-margin_bottom = 85.0
-size = 1
-
-[node name="Join" parent="Menu" instance=ExtResource( 3 )]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = 249.0
-margin_top = 205.0
-margin_right = 480.0
-margin_bottom = 279.0
-size = 1
-
 [node name="Footer" type="Label" parent="Menu"]
 modulate = Color( 0, 0, 0, 1 )
 anchor_top = 1.0
@@ -70,8 +46,7 @@ position = Vector2( 468, 152 )
 scale = Vector2( 0.763889, 0.763889 )
 texture = ExtResource( 2 )
 
-[node name="Game" parent="." instance=ExtResource( 5 )]
+[node name="GameScene" parent="." instance=ExtResource( 5 )]
 visible = false
 
-[connection signal="clicked" from="Menu/Host" to="." method="_on_Host_clicked"]
-[connection signal="clicked" from="Menu/Join" to="." method="_on_Join_clicked"]
+[node name="HTTPRequest" type="HTTPRequest" parent="."]

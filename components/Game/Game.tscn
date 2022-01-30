@@ -1,6 +1,5 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://components/Game/Game.gd" type="Script" id=1]
 [ext_resource path="res://components/Spinner/Spinner.tscn" type="PackedScene" id=2]
 [ext_resource path="res://components/Game/TileSet.tres" type="TileSet" id=3]
 [ext_resource path="res://resources/screen UI/attack_right.png" type="Texture" id=4]
@@ -19,7 +18,7 @@
 [node name="Game" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 1 )
+script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -43,7 +42,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -1024.0
 margin_bottom = -600.0
-script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -51,10 +49,10 @@ __meta__ = {
 [node name="SubmitAttackAction" parent="Actions" instance=ExtResource( 5 )]
 anchor_top = 1.0
 anchor_right = 0.5
-margin_left = 351.0
-margin_top = 471.0
-margin_right = 698.0
-margin_bottom = 530.0
+margin_left = 293.0
+margin_top = 466.0
+margin_right = 714.0
+margin_bottom = 564.0
 texture = ExtResource( 10 )
 size = 2
 
@@ -176,11 +174,11 @@ texture = ExtResource( 15 )
 
 [node name="Player1" parent="." instance=ExtResource( 7 )]
 position = Vector2( 430, 307 )
-frame = 1
+frame = 2
 
 [node name="Player2" parent="." instance=ExtResource( 7 )]
 position = Vector2( 610, 307 )
-frame = 1
+frame = 2
 flip_h = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
@@ -188,12 +186,14 @@ stream = ExtResource( 8 )
 volume_db = -12.284
 autoplay = true
 
-[connection signal="clicked" from="Actions/SubmitAttackAction" to="Actions" method="_on_SubmitAttackAction_clicked"]
-[connection signal="clicked" from="Actions/AttackControls/AttackHeadAction" to="Actions" method="_on_AttackHeadAction_clicked"]
-[connection signal="clicked" from="Actions/AttackControls/AttackTorsoAction" to="Actions" method="_on_AttackTorsoAction_clicked"]
-[connection signal="clicked" from="Actions/AttackControls/AttackLegsAction" to="Actions" method="_on_AttackLegsAction_clicked"]
-[connection signal="clicked" from="Actions/AttackControls/AttackSlashAction" to="Actions" method="_on_AttackSlashAction_clicked"]
-[connection signal="clicked" from="Actions/AttackControls/AttackStabAction" to="Actions" method="_on_AttackStabAction_clicked"]
-[connection signal="clicked" from="Actions/BlockControls/BlockHeadAction" to="Actions" method="_on_BlockHeadAction_clicked"]
-[connection signal="clicked" from="Actions/BlockControls/BlockTorsoAction" to="Actions" method="_on_BlockTorsoAction_clicked"]
-[connection signal="clicked" from="Actions/BlockControls/BlockLegsAction" to="Actions" method="_on_BlockLegsAction_clicked"]
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[connection signal="clicked" from="Actions/SubmitAttackAction" to="." method="_on_SubmitAttackAction_clicked"]
+[connection signal="clicked" from="Actions/AttackControls/AttackHeadAction" to="." method="_on_AttackHeadAction_clicked"]
+[connection signal="clicked" from="Actions/AttackControls/AttackTorsoAction" to="." method="_on_AttackTorsoAction_clicked"]
+[connection signal="clicked" from="Actions/AttackControls/AttackLegsAction" to="." method="_on_AttackLegsAction_clicked"]
+[connection signal="clicked" from="Actions/AttackControls/AttackSlashAction" to="." method="_on_AttackSlashAction_clicked"]
+[connection signal="clicked" from="Actions/AttackControls/AttackStabAction" to="." method="_on_AttackStabAction_clicked"]
+[connection signal="clicked" from="Actions/BlockControls/BlockHeadAction" to="." method="_on_BlockHeadAction_clicked"]
+[connection signal="clicked" from="Actions/BlockControls/BlockTorsoAction" to="." method="_on_BlockTorsoAction_clicked"]
+[connection signal="clicked" from="Actions/BlockControls/BlockLegsAction" to="." method="_on_BlockLegsAction_clicked"]
