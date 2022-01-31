@@ -12,14 +12,20 @@ public class Root : Control
 			"https://neverland-ggj2022-default-rtdb.europe-west1.firebasedatabase.app/";
 
 	private Node requestNode;
-
+	public string UserName = "traveler";
+	
 	public override void _Ready()
 	{
 		requestNode = GetNode("HTTPRequest");
 		requestNode.Connect("request_completed", this, "OnRequestCompleted");
 
-		HTTPRequest httpRequest = GetNode<HTTPRequest>("HTTPRequest");
-		httpRequest.Request(rootUrl + "games.json");
+	}
+	
+	private void Connect_Button_pressed()
+	{
+			HTTPRequest httpRequest = GetNode<HTTPRequest>("HTTPRequest");
+			httpRequest.Request(rootUrl + "games.json");
+			UserName = GetNode("Menu").GetNode<TextEdit>("TextEdit").Text;
 	}
 
 	public void OnRequestCompleted(
@@ -48,7 +54,7 @@ public class Root : Control
 					"OnRequestCompleted");
 
 				lastGame.Value.participants = 2;
-				lastGame.Value.player2 = "player 333";
+				lastGame.Value.player2 = UserName;
 
 				string query =
 					"{\"" +
@@ -73,7 +79,7 @@ public class Root : Control
 				var query =
 					JsonConvert
 						.SerializeObject(new GameInstance()
-						{ player1 = "me", participants = 1 });
+						{ player1 = UserName, participants = 1 });
 
 				HTTPRequest httpRequest = GetNode<HTTPRequest>("HTTPRequest");
 				string[] headerz =
@@ -103,3 +109,5 @@ public class Root : Control
 		gamenode.StartGame(gameId);
 	}
 }
+
+

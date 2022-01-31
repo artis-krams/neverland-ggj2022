@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Root.cs" type="Script" id=1]
 [ext_resource path="res://resources/screen UI/neverland_logo.png" type="Texture" id=2]
+[ext_resource path="res://resources/fonts/RobotoLight-32px.tres" type="DynamicFont" id=3]
 [ext_resource path="res://resources/fonts/RobotoLight-24px.tres" type="DynamicFont" id=4]
 [ext_resource path="res://components/Game/Game.tscn" type="PackedScene" id=5]
 [ext_resource path="res://resources/screen UI/Neverland_intro.png" type="Texture" id=6]
@@ -46,7 +47,28 @@ position = Vector2( 468, 152 )
 scale = Vector2( 0.763889, 0.763889 )
 texture = ExtResource( 2 )
 
+[node name="TextEdit" type="TextEdit" parent="Menu"]
+margin_left = 240.0
+margin_top = 420.0
+margin_right = 480.0
+margin_bottom = 470.0
+custom_fonts/font = ExtResource( 3 )
+text = "name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="Menu"]
+margin_left = 560.0
+margin_top = 420.0
+margin_right = 703.0
+margin_bottom = 470.0
+custom_fonts/font = ExtResource( 3 )
+text = "Play"
+
 [node name="GameScene" parent="." instance=ExtResource( 5 )]
 visible = false
 
 [node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[connection signal="pressed" from="Menu/Button" to="." method="Connect_Button_pressed"]

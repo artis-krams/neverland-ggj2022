@@ -73,11 +73,11 @@ public class GameLogic : Control
 
 	private void RefreshGameStatus()
 	{
-		// requestNode
-		// 	.Request($"{rootUrl}{currentGameId}.json",
-		// 	headerz,
-		// 	true,
-		// 	HTTPClient.Method.Get);
+		requestNode
+			.Request($"{rootUrl}{currentGameId}.json",
+			headerz,
+			true,
+			HTTPClient.Method.Get);
 	}
 
 	public void StartGame(string gameId)

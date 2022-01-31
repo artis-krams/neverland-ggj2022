@@ -114,10 +114,10 @@ texture = ExtResource( 14 )
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
-margin_left = 26.5
-margin_top = 56.0
-margin_right = 118.5
-margin_bottom = 112.0
+margin_left = -8.5
+margin_top = 61.0
+margin_right = 83.5
+margin_bottom = 117.0
 
 [node name="Stab" type="Sprite" parent="Actions/AttackControls/AttackStabAction"]
 position = Vector2( 89, 27 )
