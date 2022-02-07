@@ -1,9 +1,9 @@
 using System;
-using System.IO;
 using System.Text;
 using Godot;
 using Newtonsoft.Json;
 
+using static FirestoreWrapper;
 using static Player;
 
 public class GameLogic : Control
@@ -20,89 +20,128 @@ public class GameLogic : Control
 
 	private Player EnemyPlayer;
 
-	private HTTPRequest requestNode;
+	private Control loadingOverlay;
 
-	private string currentGameId;
+	private FirestoreWrapper requestNode;
 
 	private static Random random = new Random();
 
 	private static string
 		rootUrl =
-			"https://neverland-ggj2022-default-rtdb.europe-west1.firebasedatabase.app/games/";
+			"https://neverland-ggj2022-default-rtdb.europe-west1.firebasedatabase.app/games";
+
+	private Timer botTimer;
+
+	private Timer responseTimer;
 
 	public override void _Ready()
 	{
 		LocalPlayer = GetNode("Player1") as Player;
 		EnemyPlayer = GetNode("Player2") as Player;
+		loadingOverlay = GetNode<Control>("LoadingOverlay");
 
-		requestNode = GetNode<HTTPRequest>("HTTPRequest");
-		requestNode.Connect("request_completed", this, "OnRequestCompleted");
+		EnemyPlayer.NameLabel.Align = Label.AlignEnum.Right;
 
-		headerz = new string[] { "Content-Type: application/json" };
+		requestNode = GetNode<FirestoreWrapper>("FirestoreWrapper");
+		requestNode.TurnProcessor = new TurnReceived(ProcessTurn);
+		requestNode.GameStateProcessor = new GameStateUpdate(ProcessGameState);
+
 		botTimer = GetNode<Timer>("Timer");
 		botTimer.Connect("timeout", this, "BotAttack");
+
+		responseTimer = GetNode<Timer>("EnemyTimer");
+		responseTimer.Connect("timeout", this, "EnemyAttack");
 	}
 
-	float ellapsedTime = 0;
-
-	private string[] headerz;
-
-	private Timer botTimer;
-
-	public override void _Process(float delta)
+	public void ProcessTurn(Turn turn)
 	{
-		base._Process(delta);
-		ellapsedTime += delta;
-		if (ellapsedTime > 2)
-		{
-			ellapsedTime = 0;
-			RefreshGameStatus();
-		}
+		GD.Print (turn);
 	}
 
-	public void OnRequestCompleted(
-		int result,
-		int response_code,
-		string[] headers,
-		byte[] body
+	public void ProcessGameState(GameState game)
+	{
+		if (game.Player2 == null || game.Player1 == null) return;
+
+		if (!game.Player1.Ready || !game.Player2.Ready) return;
+
+		loadingOverlay.Hide();
+
+		PlayerState enemyState;
+		if (game.LocalPlayerIndex == "Player1")
+		{
+			enemyState = game.Player2;
+		}
+		else
+		{
+			enemyState = game.Player1;
+		}
+
+		EnemyPlayer.CurrentBlockTarget = enemyState.Turn.defend1;
+		EnemyPlayer.CurrentBlockTarget2 = enemyState.Turn.defend2;
+		EnemyPlayer.CurrentAttackTarget = enemyState.Turn.attack;
+		EnemyPlayer.CurrentAttackType = enemyState.Turn.attack_type;
+
+		// todo wait for network player
+		LocalPlayer.AttackSequence();
+
+		EnemyPlayer
+			.RecieveDamage(LocalPlayer.CurrentAttackTarget,
+			LocalPlayer.CurrentAttackType);
+
+		if (string.IsNullOrEmpty(EnemyPlayer.DisplayName))
+			EnemyPlayer.DisplayName = game.Player2.Name;
+
+		requestNode.ResetTurn();
+	}
+
+	public void EnemyAttack()
+	{
+		EnemyPlayer.AttackSequence();
+
+		LocalPlayer
+			.RecieveDamage(EnemyPlayer.CurrentAttackTarget,
+			EnemyPlayer.CurrentAttackType);
+	}
+
+	public void StartGame(
+		string gameId,
+		string localPlayerName,
+		string enemyPlayerName,
+		string localPlayerIndex
 	)
 	{
-		var responseBody = Encoding.UTF8.GetString(body);
-		GD.Print (responseBody);
-	}
+		LocalPlayer.DisplayName = localPlayerName;
+		GD.Print($"init game {gameId}");
 
-	private void RefreshGameStatus()
-	{
-		requestNode
-			.Request($"{rootUrl}{currentGameId}.json",
-			headerz,
-			true,
-			HTTPClient.Method.Get);
-	}
+		requestNode.StartListener (gameId, localPlayerIndex, localPlayerName);
 
-	public void StartGame(string gameId)
-	{
-		currentGameId = gameId;
-		//GD.Print($"starting game {gameId}");
+		if (string.IsNullOrEmpty(enemyPlayerName))
+		{
+			loadingOverlay.Show();
+			GD.Print($"waiting for enemy");
+			return;
+		}
+
+		GD.Print($"enemy {enemyPlayerName} ready");
+		EnemyPlayer.DisplayName = enemyPlayerName;
+		loadingOverlay.Hide();
 	}
 
 	public void _on_SubmitAttackAction_clicked(Button instance)
 	{
-		EnemyPlayer.CurrentBlockTarget = LocalPlayer.CurrentBlockTarget;
-		EnemyPlayer.CurrentBlockTarget2 = LocalPlayer.CurrentBlockTarget2;
-
-		// todo wait for network player
-		LocalPlayer.AttackSequence();
-		EnemyPlayer
-			.RecieveDamage(LocalPlayer.CurrentAttackTarget,
-			LocalPlayer.CurrentAttackType);
-		botTimer.Start(1);
+		requestNode
+			.SendTurn(new Turn()
+			{
+				attack = LocalPlayer.CurrentAttackTarget,
+				attack_type = LocalPlayer.CurrentAttackType,
+				defend1 = LocalPlayer.CurrentBlockTarget,
+				defend2 = LocalPlayer.CurrentBlockTarget2
+			});
 	}
 
 	public void BotAttack()
 	{
-		if(EnemyPlayer.dieded)
-		return;
+		if (EnemyPlayer.dieded) return;
 		GD.Print("bot attack");
 
 		var targets = Enum.GetValues(typeof (AttackTarget));
@@ -125,15 +164,13 @@ public class GameLogic : Control
 		var types = Enum.GetValues(typeof (AttackType));
 		AttackType randomType =
 			(AttackType) types.GetValue(random.Next(types.Length));
-			EnemyPlayer.CurrentAttackType = randomType;
+		EnemyPlayer.CurrentAttackType = randomType;
 
-		randomType =
-			(AttackType) types.GetValue(random.Next(types.Length));
+		randomType = (AttackType) types.GetValue(random.Next(types.Length));
 		LocalPlayer.RecieveDamage (randomTarget, randomType);
 
 		botTimer.Stop();
 
-		
 		EnemyPlayer.AttackSequence();
 	}
 

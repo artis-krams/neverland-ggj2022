@@ -17,6 +17,18 @@ public class Player : AnimatedSprite
 
 	public AttackType CurrentAttackType;
 
+	public string DisplayName
+	{
+		get
+		{
+			return NameLabel.Text;
+		}
+		set
+		{
+			NameLabel.Text = value;
+		}
+	}
+
 	private ProgressBar healthBar;
 
 	private AudioStreamPlayer audio;
@@ -30,6 +42,8 @@ public class Player : AnimatedSprite
 	private static string soundsFolder = "res://resources/sounds/";
 
 	private Label damageLabel;
+
+	public Label NameLabel;
 
 	private Vector2 damageLabelBasePosition;
 
@@ -62,13 +76,13 @@ public class Player : AnimatedSprite
 		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strikeb.wav"));
 		attackSounds.Add(GD.Load<AudioStream>($"{soundsFolder}strikec.wav"));
 
+		NameLabel = GetNode<Label>("NameLabel");
 		damageLabel = GetNode<Label>("Label");
 		damageLabelBasePosition = damageLabel.RectPosition;
 		damageLabelTargetPosition =
 			new Vector2(damageLabel.RectPosition.x,
 				damageLabel.RectPosition.y - 2);
 		damageDisplayTime = 0;
-		GD.Print("player init ok");
 	}
 
 	public override void _Process(float delta)
@@ -82,7 +96,7 @@ public class Player : AnimatedSprite
 			Stop();
 			Frame = 5;
 		}
-		
+
 		damageDisplayTime += delta * 126f;
 		damageLabel.RectPosition =
 			damageLabelBasePosition

@@ -3,5 +3,5 @@ using System.Collections.Generic;
 public class GameRoot
 {
 
-	public Dictionary<string, GameInstance> games {get;set;}
+	public Dictionary<string, GameState> games {get;set;}
 }

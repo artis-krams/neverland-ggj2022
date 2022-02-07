@@ -1,5 +1,6 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=19 format=2]
 
+[ext_resource path="res://components/Game/FirestoreWrapper.cs" type="Script" id=1]
 [ext_resource path="res://components/Spinner/Spinner.tscn" type="PackedScene" id=2]
 [ext_resource path="res://components/Game/TileSet.tres" type="TileSet" id=3]
 [ext_resource path="res://resources/screen UI/attack_right.png" type="Texture" id=4]
@@ -14,6 +15,9 @@
 [ext_resource path="res://resources/screen UI/blue guy_right.png" type="Texture" id=13]
 [ext_resource path="res://resources/screen UI/slash.png" type="Texture" id=14]
 [ext_resource path="res://resources/screen UI/Block_right.png" type="Texture" id=15]
+[ext_resource path="res://addons/godot-firebase/database/database.gd" type="Script" id=16]
+[ext_resource path="res://addons/http-sse-client/HTTPSSEClient.gd" type="Script" id=17]
+[ext_resource path="res://addons/godot-firebase/database/reference.gd" type="Script" id=18]
 
 [node name="Game" type="Control"]
 anchor_right = 1.0
@@ -27,9 +31,6 @@ __meta__ = {
 position = Vector2( 512, 300 )
 scale = Vector2( 0.291948, 0.291948 )
 texture = ExtResource( 9 )
-
-[node name="Spinner" parent="." instance=ExtResource( 2 )]
-visible = false
 
 [node name="Canvas" type="TileMap" parent="."]
 scale = Vector2( 2, 2 )
@@ -181,14 +182,63 @@ position = Vector2( 610, 307 )
 frame = 5
 flip_h = true
 
+[node name="LoadingOverlay" type="Control" parent="."]
+visible = false
+anchor_right = 1.095
+anchor_bottom = 1.058
+margin_right = -1121.28
+margin_bottom = -634.8
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="LoadingOverlay"]
+margin_right = 1024.0
+margin_bottom = 600.0
+color = Color( 0, 0, 0, 0.952941 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Spinner" parent="LoadingOverlay" instance=ExtResource( 2 )]
+margin_left = 477.0
+margin_top = 184.0
+margin_right = 553.0
+margin_bottom = 260.0
+
+[node name="Label" type="Label" parent="LoadingOverlay"]
+margin_left = 438.0
+margin_top = 303.0
+margin_right = 595.0
+margin_bottom = 317.0
+text = "Waiting for an oponent..."
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 volume_db = -12.284
-autoplay = true
-
-[node name="HTTPRequest" type="HTTPRequest" parent="."]
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="EnemyTimer" type="Timer" parent="."]
+
+[node name="FirestoreWrapper" type="Node" parent="."]
+script = ExtResource( 1 )
+
+[node name="RefreshRequest" type="HTTPRequest" parent="FirestoreWrapper"]
+use_threads = true
+
+[node name="ActionRequest" type="HTTPRequest" parent="FirestoreWrapper"]
+
+[node name="HTTPSSEClient" type="Node" parent="FirestoreWrapper"]
+script = ExtResource( 17 )
+
+[node name="FirebaseDatabaseReference" type="Node" parent="FirestoreWrapper"]
+script = ExtResource( 18 )
+
+[node name="FirebaseDatabase" type="Node" parent="FirestoreWrapper"]
+script = ExtResource( 16 )
 
 [connection signal="clicked" from="Actions/SubmitAttackAction" to="." method="_on_SubmitAttackAction_clicked"]
 [connection signal="clicked" from="Actions/AttackControls/AttackHeadAction" to="." method="_on_AttackHeadAction_clicked"]
@@ -199,3 +249,5 @@ autoplay = true
 [connection signal="clicked" from="Actions/BlockControls/BlockHeadAction" to="." method="_on_BlockHeadAction_clicked"]
 [connection signal="clicked" from="Actions/BlockControls/BlockTorsoAction" to="." method="_on_BlockTorsoAction_clicked"]
 [connection signal="clicked" from="Actions/BlockControls/BlockLegsAction" to="." method="_on_BlockLegsAction_clicked"]
+[connection signal="request_completed" from="FirestoreWrapper/RefreshRequest" to="FirestoreWrapper" method="_on_RefreshRequest_request_completed"]
+[connection signal="request_completed" from="FirestoreWrapper/ActionRequest" to="FirestoreWrapper" method="_on_ActionRequest_request_completed"]

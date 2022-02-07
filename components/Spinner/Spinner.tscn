@@ -17,4 +17,3 @@ rect_rotation = 63.3285
 rect_pivot_offset = Vector2( 38, 38 )
 texture = ExtResource( 1 )
 script = ExtResource( 2 )
-
